@@ -113,9 +113,6 @@ class OpenUnmix(nn.Module):
             Tensor: filtered spectrogram of shape
                 `(nb_samples, nb_channels, nb_bins, nb_frames)`
         """
-
-        # permute so that batch is last for lstm
-        x = x.permute(3, 0, 1, 2)
         # get current spectrogram shape
         nb_frames, nb_samples, nb_channels, nb_bins = x.data.shape
 
@@ -162,7 +159,7 @@ class OpenUnmix(nn.Module):
         # since our output is non-negative, we can apply RELU
         x = F.relu(x) * mix
         # permute back to (nb_samples, nb_channels, nb_bins, nb_frames)
-        return x.permute(1, 2, 3, 0)
+        return x
 
 
 class Separator(nn.Module):
