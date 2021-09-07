@@ -43,13 +43,13 @@ class OpenUnmix(nn.Module):
 
         self.nb_output_bins = nb_bins
         if max_bin:
-            self.nb_bins = max_bin
+            self.nb_bins = int(max_bin)
         else:
-            self.nb_bins = self.nb_output_bins
+            self.nb_bins = int(self.nb_output_bins)
 
         self.hidden_size = hidden_size
 
-        self.fc1 = Linear(self.nb_bins * nb_channels, hidden_size, bias=False)
+        self.fc1 = Linear(int(self.nb_bins * nb_channels), hidden_size, bias=False)
 
         self.bn1 = BatchNorm1d(hidden_size)
 
@@ -67,7 +67,7 @@ class OpenUnmix(nn.Module):
             dropout=0.4 if nb_layers > 1 else 0,
         )
 
-        fc2_hiddensize = hidden_size * 2
+        fc2_hiddensize = int(hidden_size * 2)
         self.fc2 = Linear(in_features=fc2_hiddensize, out_features=hidden_size, bias=False)
 
         self.bn2 = BatchNorm1d(hidden_size)
@@ -78,17 +78,10 @@ class OpenUnmix(nn.Module):
             bias=False,
         )
 
-        self.bn3 = BatchNorm1d(self.nb_output_bins * nb_channels)
+        self.bn3 = BatchNorm1d(int(self.nb_output_bins * nb_channels))
 
-        if input_mean is not None:
-            input_mean = torch.from_numpy(-input_mean[: self.nb_bins]).float()
-        else:
-            input_mean = torch.zeros(self.nb_bins)
-
-        if input_scale is not None:
-            input_scale = torch.from_numpy(1.0 / input_scale[: self.nb_bins]).float()
-        else:
-            input_scale = torch.ones(self.nb_bins)
+        input_mean = torch.zeros(int(self.nb_bins))
+        input_scale = torch.ones(int(self.nb_bins))
 
         self.input_mean = Parameter(input_mean)
         self.input_scale = Parameter(input_scale)

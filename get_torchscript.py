@@ -15,12 +15,10 @@ def main():
     model(dummy_input)
 
     # Convert Model to TorchScript
-    traced = torch.jit.trace(model, dummy_input)
-    scripted = torch.jit.script(traced)
+    scripted = torch.jit.script(model)
     opt_model = mobile_optimizer.optimize_for_mobile(scripted)
     opt_model.save("model.pt")
     
-    logger.info("[+] Successfully got openunmix torchscript model.")
     return 0
 
 if __name__ == "__main__":

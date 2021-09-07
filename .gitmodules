@@ -1,0 +1,6 @@
+[submodule "cpp/Libraries/AudioFile"]
+	path = cpp/Libraries/AudioFile
+	url = https://github.com/adamstark/AudioFile.git
+[submodule "cpp/Libraries/pffft"]
+	path = cpp/Libraries/pffft
+	url = https://github.com/marton78/pffft.git
